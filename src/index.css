@@ -180,6 +180,17 @@ button[type="submit"]:hover, .button-primary:hover { background: var(--accent-ho
 .link-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
 .link-row a { font-size: 12px; font-weight: 650; text-decoration: none; }
 .link-row a:hover { text-decoration: underline; }
+.skill-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+.skill-card { display: flex; min-height: 255px; flex-direction: column; padding: 17px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface); }
+.skill-card h3 { margin: 0; font-size: 15px; }
+.skill-card p { margin: 4px 0 0; color: var(--text-muted); font-size: 12px; }
+.skill-progress { margin-top: 18px; }
+.skill-progress-labels { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 7px; color: var(--text-muted); font-size: 10px; }
+.skill-progress-track { position: relative; height: 7px; border-radius: 4px; background: var(--surface-hover); }
+.skill-progress-track span { display: block; height: 100%; border-radius: 4px; background: var(--accent); }
+.skill-progress-track i { position: absolute; top: -3px; width: 2px; height: 13px; background: var(--text); transform: translateX(-1px); }
+.practice-date { margin-top: 14px !important; color: var(--text-subtle) !important; }
+.skill-card .record-actions { margin-top: auto; padding-top: 14px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
 .status-badge, .badge { display: inline-flex; align-items: center; min-height: 24px; padding: 3px 8px; border-radius: 6px; background: var(--surface-hover); color: var(--text-muted); font-size: 11px; font-weight: 700; }
@@ -242,6 +253,7 @@ button[type="submit"]:hover, .button-primary:hover { background: var(--accent-ho
   .page-header { align-items: stretch; flex-direction: column; gap: 14px; }
   .dashboard-widgets, .dashboard-secondary-grid, .notes-grid { grid-template-columns: 1fr; }
   .project-grid { grid-template-columns: 1fr; }
+  .skill-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .filter-bar { align-items: stretch; flex-direction: column; }
   .result-count { align-self: flex-end; }
   .application-table { display: block; overflow-x: auto; }
@@ -255,6 +267,7 @@ button[type="submit"]:hover, .button-primary:hover { background: var(--accent-ho
   .filter-controls { align-items: stretch; flex-direction: column; }
   .filter-controls > * { width: 100%; }
   .recovery-notice { flex-direction: column; }
+  .skill-grid { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
