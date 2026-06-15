@@ -1,17 +1,12 @@
+import PageHeader from "./PageHeader";
+
 type SectionHeaderProps = {
-    title: string;
-    description: string;
+  title: string;
+  description: string;
 };
 
 function SectionHeader({ title, description }: SectionHeaderProps) {
-    return (
-        <div className="section-header">
-            <div>
-                <h2>{title}</h2>
-                <p>{description}</p>
-            </div>
-        </div>
-    );
+  return <PageHeader description={description} title={title} />;
 }
 
 export default SectionHeader;

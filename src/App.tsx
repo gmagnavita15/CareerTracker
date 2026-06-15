@@ -30,28 +30,28 @@ import type {
 } from "./types";
 
 function App() {
-  const [applications, setApplications] =
+  const [applications, setApplications, applicationRecovery] =
     useLocalStorage<JobApplication[]>(
       STORAGE_KEYS.applications,
       [],
       (rawValue) => parseStoredCollection(rawValue, migrateApplication)
     );
 
-  const [skills, setSkills] =
+  const [skills, setSkills, skillRecovery] =
     useLocalStorage<Skill[]>(
       STORAGE_KEYS.skills,
       [],
       (rawValue) => parseStoredCollection(rawValue, migrateSkill)
     );
 
-  const [projects, setProjects] =
+  const [projects, setProjects, projectRecovery] =
     useLocalStorage<PortfolioProject[]>(
       STORAGE_KEYS.projects,
       [],
       (rawValue) => parseStoredCollection(rawValue, migrateProject)
     );
 
-  const [notes, setNotes] =
+  const [notes, setNotes, noteRecovery] =
     useLocalStorage<CareerNote[]>(
       STORAGE_KEYS.notes,
       [],
@@ -63,8 +63,16 @@ function App() {
     false
   );
 
+  const recoveryMessages = [
+    applicationRecovery,
+    skillRecovery,
+    projectRecovery,
+    noteRecovery,
+  ]
+    .filter((recovery) => recovery.recovered)
+    .map((recovery) => recovery.message);
+
   return (
-    <div className={isDarkMode ? "dark" : ""}>
       <BrowserRouter>
         <Routes>
           <Route 
@@ -72,6 +80,7 @@ function App() {
               <MainLayout
                 isDarkMode={isDarkMode}
                 setIsDarkMode={setIsDarkMode}
+                recoveryMessages={recoveryMessages}
               />
                 }
                   >
@@ -129,7 +138,6 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </div>
   );
 }
 
