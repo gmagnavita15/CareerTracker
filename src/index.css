@@ -168,6 +168,18 @@ button[type="submit"]:hover, .button-primary:hover { background: var(--accent-ho
 .record-meta div { display: grid; gap: 3px; }
 .record-actions { display: flex; gap: 8px; margin-top: 14px; }
 .record-actions select { flex: 1; }
+.project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+.project-card { display: flex; min-height: 230px; flex-direction: column; padding: 17px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface); }
+.project-card h3 { margin: 0; font-size: 15px; }
+.project-card p { margin: 4px 0 0; color: var(--text-muted); font-size: 12px; }
+.project-card-status { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+.project-card-status > span:last-child { color: var(--text-subtle); font-size: 10px; }
+.project-card .detail-panel { margin-top: 14px; }
+.project-card .record-actions { margin-top: auto; padding-top: 14px; }
+.project-description { color: var(--text) !important; line-height: 1.55; }
+.link-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+.link-row a { font-size: 12px; font-weight: 650; text-decoration: none; }
+.link-row a:hover { text-decoration: underline; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
 .status-badge, .badge { display: inline-flex; align-items: center; min-height: 24px; padding: 3px 8px; border-radius: 6px; background: var(--surface-hover); color: var(--text-muted); font-size: 11px; font-weight: 700; }
@@ -229,6 +241,7 @@ button[type="submit"]:hover, .button-primary:hover { background: var(--accent-ho
   .main-content { padding: 24px 18px 40px; }
   .page-header { align-items: stretch; flex-direction: column; gap: 14px; }
   .dashboard-widgets, .dashboard-secondary-grid, .notes-grid { grid-template-columns: 1fr; }
+  .project-grid { grid-template-columns: 1fr; }
   .filter-bar { align-items: stretch; flex-direction: column; }
   .result-count { align-self: flex-end; }
   .application-table { display: block; overflow-x: auto; }
