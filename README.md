@@ -1,103 +1,95 @@
 # CareerTracker
 
-CareerTracker is a career management dashboard built with React and TypeScript that helps track job applications, technical skills, portfolio projects, and career notes.
+CareerTracker is a local-first career management dashboard for organizing a job search, portfolio projects, technical development, and interview knowledge. It is designed as a polished SaaS-style product while keeping data private in the browser.
 
 ## Features
 
-### Dashboard Analytics
-- Application statistics
-- Interview tracking
-- Offer tracking
-- Project progress tracking
-- Skill growth monitoring
-
-### Job Application Tracker
-- Add applications
-- Update application status
-- Search applications
-- Local persistence
-
-### Skills Tracker
-- Categorize technical skills
-- Track proficiency levels
-- Filter by category
-
-### Portfolio Projects
-- Track project status
-- Manage technology stacks
-- Monitor deployment progress
-
-### Career Notes
-- Store interview notes
-- Save networking notes
-- Organize technical concepts
-
-### User Experience
-- React Router navigation
-- Dark mode
-- Toast notifications
-- Responsive layout
-- Persistent local storage
+- Application pipeline with professional fields, status updates, search, filters, sorting, and expandable details
+- Dashboard analytics for interview rate, active projects, recent skill practice, pipeline distribution, and workspace activity
+- Portfolio project tracking with delivery status, priority, descriptions, GitHub links, and live URLs
+- Skill goals with current and target levels, practice dates, notes, and progress visualization
+- Searchable career notes organized by category
+- Defensive localStorage migration for legacy and malformed saved data
+- Responsive desktop, tablet, and mobile layouts
+- Accessible labels, keyboard navigation, focus states, semantic HTML, and confirmation dialogs
+- Consistent light and dark themes
 
 ## Tech Stack
 
-### Frontend
-- React
-- TypeScript
-- Vite
-- React Router
-
-### State Management
-- React Hooks
-- Custom Hooks
-- Local Storage
-
-### UI
-- CSS
-- Responsive Design
-- Component Architecture
+- React 19
+- TypeScript 6
+- Vite 8
+- React Router 7
+- CSS with design tokens and responsive layouts
+- Vitest for focused service tests
+- react-hot-toast for concise mutation feedback
 
 ## Architecture
 
 ```text
 src/
-├── components/
-├── pages/
-├── services/
-├── hooks/
-├── layout/
-├── types/
-└── constants/
+├── components/    Reusable UI primitives and domain views
+├── hooks/         Browser persistence hooks
+├── layout/        Responsive application shell
+├── pages/         Route-level components
+├── services/      Domain operations, migrations, validation, and analytics
+├── constants.ts   Typed domain options and storage keys
+└── types.ts       Shared domain contracts
 ```
 
-## Future Roadmap
+`App.tsx` currently owns domain state and passes typed setters to route components. Persistence, migrations, validation, formatting, analytics, and record operations are isolated from presentation so state can later move to Context API or a backend without rewriting the user interface.
 
-### Phase 2
-- Charts and analytics
-- Context API
-- Improved dashboard widgets
+## Data Reliability
 
-### Phase 3
-- Authentication
-- User accounts
+CareerTracker keeps the original browser storage keys to preserve existing installations. Stored collections are parsed inside guarded code, migrated record-by-record, and supplied with defaults for newly introduced fields. Invalid records are skipped instead of crashing the application, and storage failures surface as non-blocking recovery notices.
 
-### Phase 4
-- Backend API
-- PostgreSQL database
-- Supabase integration
+No secrets or credentials belong in the frontend. Environment files are ignored by Git.
 
-### Phase 5
-- Cloud deployment
-- CI/CD pipeline
-- Automated testing
-
-## Installation
+## Getting Started
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Author
+Open the local URL printed by Vite.
 
-Gabriel Magnavita
+### Quality Checks
+
+```bash
+npm test -- --run
+npm run lint
+npm run build
+```
+
+## Screenshots
+
+Recommended portfolio captures:
+
+- Dashboard overview in light mode
+- Application pipeline on desktop
+- Responsive mobile navigation and record cards
+- Dashboard or projects page in dark mode
+
+## Accessibility
+
+- Skip link and semantic page landmarks
+- Visible focus indicators
+- Labeled forms, filters, icon buttons, and status controls
+- Native dialog behavior for destructive confirmations
+- Mobile navigation with accessible expanded state
+- Status text that does not rely on color alone
+- Reduced-motion support
+
+## Roadmap
+
+- Edit existing records
+- Import and export workspace data
+- Optional cloud sync and authentication
+- Reminders for follow-ups and interview dates
+- Deeper trend analytics and date-range reporting
+- Automated component-level accessibility checks
+
+## Privacy
+
+CareerTracker is local-first. Application, project, skill, and note data remain in the current browser unless a future sync feature is explicitly added.

@@ -27,6 +27,12 @@ export const PROJECT_STATUSES = [
   "Deployed",
 ] as const;
 
+export const PROJECT_PRIORITIES = [
+  "Low",
+  "Medium",
+  "High",
+] as const;
+
 export const NOTE_CATEGORIES = [
   "Interview Prep",
   "Resume",
@@ -34,3 +40,11 @@ export const NOTE_CATEGORIES = [
   "Technical Concept",
   "Job Research",
 ] as const;
+
+export const STORAGE_KEYS = {
+  applications: "applications",
+  skills: "skills",
+  projects: "projects",
+  notes: "notes",
+  theme: "isDarkMode",
+} as const;

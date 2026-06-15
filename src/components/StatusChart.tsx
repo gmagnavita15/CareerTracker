@@ -1,5 +1,6 @@
 import type { JobApplication } from "../types";
 import { getApplicationStatusSummary } from "../services/dashboardService";
+import EmptyState from "./EmptyState";
 
 type StatusChartProps = {
   applications: JobApplication[];
@@ -10,10 +11,18 @@ function StatusChart({ applications }: StatusChartProps) {
 
   return (
     <section className="section-card">
-      <h2>Application Status Breakdown</h2>
+      <div className="panel-heading">
+        <div>
+          <h2>Application pipeline</h2>
+          <p>Distribution across each stage of your search.</p>
+        </div>
+      </div>
 
       {applications.length === 0 ? (
-        <p className="empty-state">No application data yet.</p>
+        <EmptyState
+          description="Pipeline analytics appear after you add an application."
+          title="No pipeline data"
+        />
       ) : (
         <div className="chart-list">
           {summary.map((item) => (

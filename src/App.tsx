@@ -13,6 +13,15 @@ import ProjectsPage from "./pages/ProjectsPage";
 import NotesPage from "./pages/NotesPage";
 
 import useLocalStorage from "./hooks/useLocalStorage";
+import { STORAGE_KEYS } from "./constants";
+import {
+  migrateApplication,
+  migrateNote,
+  migrateProject,
+  migrateSkill,
+  parseStoredBoolean,
+  parseStoredCollection,
+} from "./services/storageService";
 
 import type {
   JobApplication,
@@ -22,37 +31,51 @@ import type {
 } from "./types";
 
 function App() {
-  const [applications, setApplications] =
+  const [applications, setApplications, applicationRecovery] =
     useLocalStorage<JobApplication[]>(
-      "applications",
-      []
+      STORAGE_KEYS.applications,
+      [],
+      (rawValue) => parseStoredCollection(rawValue, migrateApplication)
     );
 
-  const [skills, setSkills] =
+  const [skills, setSkills, skillRecovery] =
     useLocalStorage<Skill[]>(
-      "skills",
-      []
+      STORAGE_KEYS.skills,
+      [],
+      (rawValue) => parseStoredCollection(rawValue, migrateSkill)
     );
 
-  const [projects, setProjects] =
+  const [projects, setProjects, projectRecovery] =
     useLocalStorage<PortfolioProject[]>(
-      "projects",
-      []
+      STORAGE_KEYS.projects,
+      [],
+      (rawValue) => parseStoredCollection(rawValue, migrateProject)
     );
 
-  const [notes, setNotes] =
+  const [notes, setNotes, noteRecovery] =
     useLocalStorage<CareerNote[]>(
-      "notes",
-      []
+      STORAGE_KEYS.notes,
+      [],
+      (rawValue) => parseStoredCollection(rawValue, migrateNote)
     );
 
-  const [isDarkMode, setIsDarkMode] = useLocalStorage<boolean>(
-    "isDarkMode",
-    false
+  const [isDarkMode, setIsDarkMode, themeRecovery] = useLocalStorage<boolean>(
+    STORAGE_KEYS.theme,
+    false,
+    (rawValue) => parseStoredBoolean(rawValue, false)
   );
 
+  const recoveryMessages = [
+    applicationRecovery,
+    skillRecovery,
+    projectRecovery,
+    noteRecovery,
+    themeRecovery,
+  ]
+    .filter((recovery) => recovery.recovered)
+    .map((recovery) => recovery.message);
+
   return (
-    <div className={isDarkMode ? "dark" : ""}>
       <BrowserRouter>
         <Routes>
           <Route 
@@ -60,6 +83,7 @@ function App() {
               <MainLayout
                 isDarkMode={isDarkMode}
                 setIsDarkMode={setIsDarkMode}
+                recoveryMessages={recoveryMessages}
               />
                 }
                   >
@@ -70,7 +94,7 @@ function App() {
                 applications={applications}
                 skills={skills}
                 projects={projects}
-                noteCount={notes.length}
+                notes={notes}
               />
             }
           />
@@ -117,7 +141,6 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </div>
   );
 }
 
