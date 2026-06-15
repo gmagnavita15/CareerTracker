@@ -27,3 +27,7 @@ dist-ssr
 *.sln
 *.sw?
 .worktrees/
+
+# Local AI tooling
+.agents/
+.codex-plugins/
