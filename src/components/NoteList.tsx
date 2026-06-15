@@ -24,9 +24,11 @@ function NoteList({ notes, setNotes }: NoteListProps) {
 
     const newNote: CareerNote = {
       id: crypto.randomUUID(),
-      title,
-      content,
+      title: title.trim(),
+      content: content.trim(),
       category,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     setNotes([...notes, newNote]);

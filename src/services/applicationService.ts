@@ -1,16 +1,38 @@
-import type { ApplicationStatus, JobApplication, } from "../types";
-import { v4 as uuidv4 } from "uuid";
+import type { ApplicationStatus, JobApplication } from "../types";
+
+type ApplicationDetails = Partial<
+    Pick<
+        JobApplication,
+        | "dateApplied"
+        | "jobUrl"
+        | "location"
+        | "salaryRange"
+        | "contactName"
+        | "notes"
+    >
+>;
 
 export function createApplication(
     company: string,
     role: string,
-    status: ApplicationStatus
+    status: ApplicationStatus,
+    details: ApplicationDetails = {}
 ): JobApplication {
+    const now = new Date().toISOString();
+
     return {
-        id: uuidv4(),
-        company,
-        role,
+        id: crypto.randomUUID(),
+        company: company.trim(),
+        role: role.trim(),
         status,
+        dateApplied: details.dateApplied || now.slice(0, 10),
+        jobUrl: details.jobUrl?.trim() || "",
+        location: details.location?.trim() || "",
+        salaryRange: details.salaryRange?.trim() || "",
+        contactName: details.contactName?.trim() || "",
+        notes: details.notes?.trim() || "",
+        createdAt: now,
+        updatedAt: now,
     };
 }
 
@@ -27,6 +49,8 @@ export function updateApplicationStatus(
     newStatus: ApplicationStatus
 ): JobApplication[] {
     return applications.map((app) =>
-        app.id === id ? { ...app, status: newStatus } : app
+        app.id === id
+            ? { ...app, status: newStatus, updatedAt: new Date().toISOString() }
+            : app
     );
 }

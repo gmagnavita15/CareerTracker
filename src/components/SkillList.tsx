@@ -25,9 +25,14 @@ function SkillList({ skills, setSkills }: SkillListProps) {
 
     const newSkill: Skill = {
       id: crypto.randomUUID(),
-      name,
+      name: name.trim(),
       category,
       level,
+      targetLevel: level,
+      lastPracticed: "",
+      notes: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     setSkills([...skills, newSkill]);
@@ -46,7 +51,9 @@ function SkillList({ skills, setSkills }: SkillListProps) {
   function handleLevelChange(id: string, newLevel: SkillLevel) {
     setSkills(
       skills.map((skill) =>
-        skill.id === id ? { ...skill, level: newLevel } : skill
+        skill.id === id
+          ? { ...skill, level: newLevel, updatedAt: new Date().toISOString() }
+          : skill
       )
     );
 

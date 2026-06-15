@@ -13,6 +13,14 @@ import ProjectsPage from "./pages/ProjectsPage";
 import NotesPage from "./pages/NotesPage";
 
 import useLocalStorage from "./hooks/useLocalStorage";
+import { STORAGE_KEYS } from "./constants";
+import {
+  migrateApplication,
+  migrateNote,
+  migrateProject,
+  migrateSkill,
+  parseStoredCollection,
+} from "./services/storageService";
 
 import type {
   JobApplication,
@@ -24,26 +32,30 @@ import type {
 function App() {
   const [applications, setApplications] =
     useLocalStorage<JobApplication[]>(
-      "applications",
-      []
+      STORAGE_KEYS.applications,
+      [],
+      (rawValue) => parseStoredCollection(rawValue, migrateApplication)
     );
 
   const [skills, setSkills] =
     useLocalStorage<Skill[]>(
-      "skills",
-      []
+      STORAGE_KEYS.skills,
+      [],
+      (rawValue) => parseStoredCollection(rawValue, migrateSkill)
     );
 
   const [projects, setProjects] =
     useLocalStorage<PortfolioProject[]>(
-      "projects",
-      []
+      STORAGE_KEYS.projects,
+      [],
+      (rawValue) => parseStoredCollection(rawValue, migrateProject)
     );
 
   const [notes, setNotes] =
     useLocalStorage<CareerNote[]>(
-      "notes",
-      []
+      STORAGE_KEYS.notes,
+      [],
+      (rawValue) => parseStoredCollection(rawValue, migrateNote)
     );
 
   const [isDarkMode, setIsDarkMode] = useLocalStorage<boolean>(

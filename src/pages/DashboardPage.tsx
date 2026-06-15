@@ -125,7 +125,7 @@ const deployedProjectsCount = projects.filter(
               {recentApplications.map((application) => (
                 <tr key={application.id}>
                   <td>{application.company}</td>
-                  <td>{application.position}</td>
+                  <td>{application.role}</td>
                   <td>
                     <span className="badge">{application.status}</span>
                   </td>
