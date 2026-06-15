@@ -1,185 +1,206 @@
+import { Link } from "react-router-dom";
+import EmptyState from "../components/EmptyState";
+import PageHeader from "../components/PageHeader";
 import StatCard from "../components/StatCard";
+import StatusBadge from "../components/StatusBadge";
+import StatusChart from "../components/StatusChart";
+import { getRecentActivity } from "../services/activityService";
+import { getDashboardMetrics } from "../services/dashboardService";
+import { formatDate, formatRelativeDate } from "../services/formatService";
 import type {
+  CareerNote,
   JobApplication,
   PortfolioProject,
   Skill,
 } from "../types";
-import StatusChart from "../components/StatusChart";
 
 type DashboardPageProps = {
   applications: JobApplication[];
   projects: PortfolioProject[];
   skills: Skill[];
-  noteCount: number;
+  notes: CareerNote[];
 };
 
 function DashboardPage({
   applications,
   projects,
   skills,
-  noteCount,
+  notes,
 }: DashboardPageProps) {
-  const recentApplications = applications.slice(-5).reverse();
-
-  const activeProjects = projects.filter(
-    (project) => project.status !== "Deployed"
-  );
-
-  const advancedSkills = skills.filter(
-    (skill) => skill.level === "Advanced"
-  );
-
-  const interviewingCount = applications.filter(
-  (application) => application.status === "Interviewing"
-).length;
-
-const offerCount = applications.filter(
-  (application) => application.status === "Offer"
-).length;
-
-const deployedProjectsCount = projects.filter(
-  (project) => project.status === "Deployed"
-).length;
+  const metrics = getDashboardMetrics(applications, projects, skills);
+  const recentApplications = [...applications]
+    .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
+    .slice(0, 5);
+  const activeProjects = projects
+    .filter((project) => project.status !== "Deployed")
+    .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
+    .slice(0, 4);
+  const progressingSkills = skills
+    .filter((skill) => skill.level !== skill.targetLevel)
+    .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
+    .slice(0, 4);
+  const activity = getRecentActivity(applications, projects, skills, notes);
 
   return (
     <>
-      <section className="hero">
-        <h1>Developer Dashboard</h1>
-        <p>
-          Track your job search, technical growth, portfolio projects, and notes.
-        </p>
-      </section>
+      <PageHeader
+        actions={<Link className="button-primary" to="/applications">Add application</Link>}
+        description="Track your search, portfolio, and skill development from one focused workspace."
+        title="Career overview"
+      />
 
-      <section className="stats-grid">
+      <section aria-label="Career metrics" className="stats-grid">
         <StatCard
+          description="Jobs currently tracked"
           title="Applications"
-          value={applications.length}
-          description="Jobs applied to"
+          value={metrics.applicationCount}
         />
-
         <StatCard
-          title="Skills"
-          value={skills.length}
-          description="Skills currently learning"
+          description="Interviewing or offer stage"
+          title="Interview rate"
+          value={`${metrics.interviewRate}%`}
         />
-
         <StatCard
-          title="Projects"
-          value={projects.length}
-          description="Portfolio projects in progress"
+          description="Projects not yet deployed"
+          title="Active projects"
+          value={metrics.activeProjectCount}
         />
-
         <StatCard
-          title="Notes"
-          value={noteCount}
-          description="Career and interview notes"
+          description="Practiced in the last 30 days"
+          title="Skills practiced"
+          value={metrics.recentlyPracticedSkillCount}
         />
       </section>
 
-      <section className="stats-grid secondary-stats">
-        <StatCard
-          title="Interviewing"
-          value={interviewingCount}
-          description="Applications currently interviewing"
-        />
+      <div className="dashboard-primary-grid">
+        <section className="section-card">
+          <div className="panel-heading">
+            <div>
+              <h2>Recent applications</h2>
+              <p>Your latest application activity and current stages.</p>
+            </div>
+            <Link to="/applications">View all</Link>
+          </div>
 
-        <StatCard
-          title="Offers"
-          value={offerCount}
-          description="Applications with offers"
-        />
+          {recentApplications.length === 0 ? (
+            <EmptyState
+              description="Add your first role to start measuring application progress."
+              title="No applications yet"
+            />
+          ) : (
+            <div className="table-scroll">
+              <table className="application-table">
+                <thead>
+                  <tr>
+                    <th>Company</th>
+                    <th>Role</th>
+                    <th>Applied</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentApplications.map((application) => (
+                    <tr key={application.id}>
+                      <td><strong>{application.company}</strong></td>
+                      <td>{application.role}</td>
+                      <td>{formatDate(application.dateApplied)}</td>
+                      <td><StatusBadge value={application.status} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
 
-        <StatCard
-          title="Deployed Projects"
-          value={deployedProjectsCount}
-          description="Projects completed and deployed"
-        />
+        <StatusChart applications={applications} />
+      </div>
 
-        <StatCard
-          title="Advanced Skills"
-          value={advancedSkills.length}
-          description="Skills marked as advanced"
-        />
-      </section>
-
-      <StatusChart applications={applications} />
-
-      <section className="section-card">
-        <h2>Recent Applications</h2>
-
-        {recentApplications.length === 0 ? (
-          <p className="empty-state">
-            No applications yet. Add some from the Applications page.
-          </p>
-        ) : (
-          <table className="application-table">
-            <thead>
-              <tr>
-                <th>Company</th>
-                <th>Position</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {recentApplications.map((application) => (
-                <tr key={application.id}>
-                  <td>{application.company}</td>
-                  <td>{application.role}</td>
-                  <td>
-                    <span className="badge">{application.status}</span>
-                  </td>
-                </tr>
+      <div className="dashboard-secondary-grid">
+        <section className="section-card">
+          <div className="panel-heading">
+            <div>
+              <h2>Recent activity</h2>
+              <p>Updates across your career workspace.</p>
+            </div>
+          </div>
+          {activity.length === 0 ? (
+            <EmptyState
+              description="Activity appears as you add and update career records."
+              title="Nothing to show yet"
+            />
+          ) : (
+            <ul className="activity-list">
+              {activity.map((item) => (
+                <li key={item.id}>
+                  <span className={`activity-marker activity-${item.type}`} />
+                  <div>
+                    <strong>{item.title}</strong>
+                    <span>{item.detail}</span>
+                  </div>
+                  <time dateTime={item.timestamp}>{formatRelativeDate(item.timestamp)}</time>
+                </li>
               ))}
-            </tbody>
-          </table>
-        )}
-      </section>
+            </ul>
+          )}
+        </section>
 
-      <section className="dashboard-widgets">
-        <div className="section-card">
-          <h2>Projects In Progress</h2>
-
+        <section className="section-card">
+          <div className="panel-heading">
+            <div>
+              <h2>Active projects</h2>
+              <p>Portfolio work currently moving forward.</p>
+            </div>
+            <Link to="/projects">View all</Link>
+          </div>
           {activeProjects.length === 0 ? (
-            <p className="empty-state">
-              No active projects right now.
-              </p>
+            <EmptyState
+              description="Add a portfolio project or mark deployed work as complete."
+              title="No active projects"
+            />
           ) : (
             <ul className="dashboard-list">
               {activeProjects.map((project) => (
                 <li key={project.id}>
-                  <strong>{project.name}</strong>
-                  <span className="badge">
-                    {project.status}
-                  </span>
+                  <div>
+                    <strong>{project.name}</strong>
+                    <span>{project.techStack || "Tech stack not set"}</span>
+                  </div>
+                  <StatusBadge value={project.status} />
                 </li>
               ))}
             </ul>
           )}
-        </div>
+        </section>
 
-        <div className="section-card">
-          <h2>Advanced Skills</h2>
-
-          {advancedSkills.length === 0 ? (
-            <p className="empty-state">
-              No advanced skills tracked yet.
-              </p>
+        <section className="section-card">
+          <div className="panel-heading">
+            <div>
+              <h2>Skill goals</h2>
+              <p>Skills that still have room to reach their target.</p>
+            </div>
+            <Link to="/skills">View all</Link>
+          </div>
+          {progressingSkills.length === 0 ? (
+            <EmptyState
+              description="Set target levels to make your learning goals visible."
+              title="No active skill goals"
+            />
           ) : (
             <ul className="dashboard-list">
-              {advancedSkills.map((skill) => (
+              {progressingSkills.map((skill) => (
                 <li key={skill.id}>
-                  <strong>{skill.name}</strong>
-
-                  <span className="badge">
-                    {skill.category}
-                    </span>
+                  <div>
+                    <strong>{skill.name}</strong>
+                    <span>{skill.category}</span>
+                  </div>
+                  <span className="progress-label">{skill.level} → {skill.targetLevel}</span>
                 </li>
               ))}
             </ul>
           )}
-        </div>
-      </section>
+        </section>
+      </div>
     </>
   );
 }

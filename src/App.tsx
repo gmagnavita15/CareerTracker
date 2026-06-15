@@ -91,7 +91,7 @@ function App() {
                 applications={applications}
                 skills={skills}
                 projects={projects}
-                noteCount={notes.length}
+                notes={notes}
               />
             }
           />
