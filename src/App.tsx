@@ -1,0 +1,124 @@
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+
+import MainLayout from "./layout/MainLayout";
+
+import DashboardPage from "./pages/DashboardPage";
+import ApplicationsPage from "./pages/ApplicationsPage";
+import SkillsPage from "./pages/SkillsPage";
+import ProjectsPage from "./pages/ProjectsPage";
+import NotesPage from "./pages/NotesPage";
+
+import useLocalStorage from "./hooks/useLocalStorage";
+
+import type {
+  JobApplication,
+  Skill,
+  PortfolioProject,
+  CareerNote,
+} from "./types";
+
+function App() {
+  const [applications, setApplications] =
+    useLocalStorage<JobApplication[]>(
+      "applications",
+      []
+    );
+
+  const [skills, setSkills] =
+    useLocalStorage<Skill[]>(
+      "skills",
+      []
+    );
+
+  const [projects, setProjects] =
+    useLocalStorage<PortfolioProject[]>(
+      "projects",
+      []
+    );
+
+  const [notes, setNotes] =
+    useLocalStorage<CareerNote[]>(
+      "notes",
+      []
+    );
+
+  const [isDarkMode, setIsDarkMode] = useLocalStorage<boolean>(
+    "isDarkMode",
+    false
+  );
+
+  return (
+    <div className={isDarkMode ? "dark" : ""}>
+      <BrowserRouter>
+        <Routes>
+          <Route 
+            element={
+              <MainLayout
+                isDarkMode={isDarkMode}
+                setIsDarkMode={setIsDarkMode}
+              />
+                }
+                  >
+          <Route
+            path="/"
+            element={
+              <DashboardPage
+                applications={applications}
+                skills={skills}
+                projects={projects}
+                noteCount={notes.length}
+              />
+            }
+          />
+
+          <Route
+            path="/applications"
+            element={
+              <ApplicationsPage
+                applications={applications}
+                setApplications={setApplications}
+              />
+            }
+          />
+
+          <Route
+            path="/skills"
+            element={
+              <SkillsPage
+                skills={skills}
+                setSkills={setSkills}
+              />
+            }
+          />
+
+          <Route
+            path="/projects"
+            element={
+              <ProjectsPage
+                projects={projects}
+                setProjects={setProjects}
+              />
+            }
+          />
+
+          <Route
+            path="/notes"
+            element={
+              <NotesPage
+                notes={notes}
+                setNotes={setNotes}
+              />
+            }
+          />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+}
+
+export default App;
