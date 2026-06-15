@@ -117,7 +117,8 @@ a { color: var(--accent); }
 .form-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 12px; margin-top: 18px; }
 .form-grid .form-field:has(textarea) { grid-column: 1 / -1; }
 .form-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; }
-.note-form textarea { grid-column: 1 / -1; min-height: 120px; resize: vertical; }
+.note-form .form-field:has(textarea) { grid-column: 1 / -1; }
+.note-form textarea { min-height: 140px; resize: vertical; }
 .form-field { display: grid; align-content: start; gap: 6px; }
 .form-field label { color: var(--text); font-size: 12px; font-weight: 650; }
 .field-error, .field-hint { min-height: 16px; margin: 0; font-size: 11px; line-height: 1.4; }
@@ -216,10 +217,16 @@ button[type="submit"]:hover, .button-primary:hover { background: var(--accent-ho
 .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 14px 20px; border-top: 1px solid var(--border); background: var(--surface-subtle); }
 
 .notes-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
-.note-card { display: flex; min-height: 180px; flex-direction: column; justify-content: space-between; padding: 18px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface); }
+.note-card { display: flex; min-height: 230px; flex-direction: column; justify-content: space-between; padding: 18px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface); }
 .note-card h3 { margin: 0 0 6px; font-size: 15px; }
 .note-card p { line-height: 1.55; }
 .note-category { color: var(--text-muted); font-size: 11px; font-weight: 700; }
+.note-date { color: var(--text-subtle) !important; font-size: 10px !important; }
+.note-preview { display: -webkit-box; margin: 16px 0 0; overflow: hidden; color: var(--text-muted); font-size: 13px; -webkit-box-orient: vertical; -webkit-line-clamp: 5; }
+.note-content { margin: 16px 0 0; color: var(--text-muted); font-size: 13px; white-space: pre-wrap; }
+.note-content-full { margin: 0; color: var(--text); white-space: pre-wrap; }
+.note-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--border); }
+.note-actions time { color: var(--text-subtle); font-size: 10px; }
 .chart-list { display: grid; gap: 14px; margin-top: 16px; }
 .chart-label { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--text-muted); font-size: 12px; }
 .chart-bar-background { height: 7px; overflow: hidden; border-radius: 4px; background: var(--surface-hover); }
