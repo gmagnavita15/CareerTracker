@@ -19,6 +19,7 @@ import {
   migrateNote,
   migrateProject,
   migrateSkill,
+  parseStoredBoolean,
   parseStoredCollection,
 } from "./services/storageService";
 
@@ -58,9 +59,10 @@ function App() {
       (rawValue) => parseStoredCollection(rawValue, migrateNote)
     );
 
-  const [isDarkMode, setIsDarkMode] = useLocalStorage<boolean>(
-    "isDarkMode",
-    false
+  const [isDarkMode, setIsDarkMode, themeRecovery] = useLocalStorage<boolean>(
+    STORAGE_KEYS.theme,
+    false,
+    (rawValue) => parseStoredBoolean(rawValue, false)
   );
 
   const recoveryMessages = [
@@ -68,6 +70,7 @@ function App() {
     skillRecovery,
     projectRecovery,
     noteRecovery,
+    themeRecovery,
   ]
     .filter((recovery) => recovery.recovered)
     .map((recovery) => recovery.message);

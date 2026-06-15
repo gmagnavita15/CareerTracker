@@ -27,6 +27,22 @@ export type ParsedCollection<T> = {
   recovered: boolean;
 };
 
+export function parseStoredBoolean(
+  rawValue: string | null,
+  fallback: boolean
+): { data: boolean; recovered: boolean } {
+  if (!rawValue) return { data: fallback, recovered: false };
+
+  try {
+    const parsed: unknown = JSON.parse(rawValue);
+    return typeof parsed === "boolean"
+      ? { data: parsed, recovered: false }
+      : { data: fallback, recovered: true };
+  } catch {
+    return { data: fallback, recovered: true };
+  }
+}
+
 function isRecord(value: unknown): value is UnknownRecord {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   migrateApplication,
+  parseStoredBoolean,
   parseStoredCollection,
 } from "./storageService";
 
@@ -49,5 +50,14 @@ describe("parseStoredCollection", () => {
 
     expect(result.data).toEqual([]);
     expect(result.recovered).toBe(true);
+  });
+});
+
+describe("parseStoredBoolean", () => {
+  it("falls back when stored JSON is not a boolean", () => {
+    expect(parseStoredBoolean('"dark"', false)).toEqual({
+      data: false,
+      recovered: true,
+    });
   });
 });
