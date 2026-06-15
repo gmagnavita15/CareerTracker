@@ -1,73 +1,103 @@
-# React + TypeScript + Vite
+# CareerTracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+CareerTracker is a career management dashboard built with React and TypeScript that helps track job applications, technical skills, portfolio projects, and career notes.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Dashboard Analytics
+- Application statistics
+- Interview tracking
+- Offer tracking
+- Project progress tracking
+- Skill growth monitoring
 
-## React Compiler
+### Job Application Tracker
+- Add applications
+- Update application status
+- Search applications
+- Local persistence
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Skills Tracker
+- Categorize technical skills
+- Track proficiency levels
+- Filter by category
 
-## Expanding the ESLint configuration
+### Portfolio Projects
+- Track project status
+- Manage technology stacks
+- Monitor deployment progress
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Career Notes
+- Store interview notes
+- Save networking notes
+- Organize technical concepts
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### User Experience
+- React Router navigation
+- Dark mode
+- Toast notifications
+- Responsive layout
+- Persistent local storage
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Frontend
+- React
+- TypeScript
+- Vite
+- React Router
+
+### State Management
+- React Hooks
+- Custom Hooks
+- Local Storage
+
+### UI
+- CSS
+- Responsive Design
+- Component Architecture
+
+## Architecture
+
+```text
+src/
+├── components/
+├── pages/
+├── services/
+├── hooks/
+├── layout/
+├── types/
+└── constants/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Future Roadmap
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Phase 2
+- Charts and analytics
+- Context API
+- Improved dashboard widgets
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Phase 3
+- Authentication
+- User accounts
+
+### Phase 4
+- Backend API
+- PostgreSQL database
+- Supabase integration
+
+### Phase 5
+- Cloud deployment
+- CI/CD pipeline
+- Automated testing
+
+## Installation
+
+```bash
+npm install
+npm run dev
 ```
+
+## Author
+
+Gabriel Magnavita
