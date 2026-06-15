@@ -68,7 +68,7 @@ a { color: var(--accent); }
 .sidebar-footer span { color: #858a81; font-size: 11px; }
 .app-main { min-width: 0; flex: 1; }
 .topbar { height: 64px; display: flex; align-items: center; justify-content: flex-end; padding: 0 28px; background: var(--surface); border-bottom: 1px solid var(--border); }
-.mobile-menu-button, .mobile-brand { display: none; }
+.icon-button.mobile-menu-button, .mobile-brand { display: none; }
 .main-content { width: 100%; max-width: 1440px; margin: 0 auto; padding: 32px; }
 
 .page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
@@ -254,7 +254,7 @@ button[type="submit"]:hover, .button-primary:hover { background: var(--accent-ho
   .sidebar-backdrop { position: fixed; inset: 0; z-index: 40; display: block; background: rgba(15,17,14,.5); opacity: 0; pointer-events: none; transition: opacity 180ms ease; }
   .sidebar-backdrop.is-visible { opacity: 1; pointer-events: auto; }
   .topbar { position: sticky; top: 0; z-index: 30; justify-content: space-between; padding: 0 18px; }
-  .mobile-menu-button { display: inline-grid; }
+  .icon-button.mobile-menu-button { display: inline-grid; }
   .mobile-brand { display: inline; font-size: 14px; font-weight: 700; }
   .main-content { padding: 24px 18px 40px; }
   .page-header { align-items: stretch; flex-direction: column; gap: 14px; }
