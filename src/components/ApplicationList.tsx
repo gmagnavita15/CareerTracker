@@ -5,6 +5,7 @@ import {
   createApplication,
   deleteApplication,
   updateApplicationStatus,
+  updateApplication,
 } from "../services/applicationService";
 import { formatDate } from "../services/formatService";
 import {
@@ -44,6 +45,37 @@ function ApplicationList({ applications, setApplications }: ApplicationListProps
   const [statusFilter, setStatusFilter] = useState<"All" | ApplicationStatus>("All");
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   const [pendingDelete, setPendingDelete] = useState<JobApplication | null>(null);
+  const [editingApplication, setEditingApplication] = useState<JobApplication | null>(null);
+
+  function resetForm() {
+    setCompany("");
+    setRole("");
+    setStatus("Applied");
+    setDateApplied(new Date().toISOString().slice(0, 10));
+    setJobUrl("");
+    setLocation("");
+    setSalaryRange("");
+    setContactName("");
+    setNotes("");
+    setErrors({});
+    setEditingApplication(null);
+  }
+
+  function handleEdit(application: JobApplication) {
+    setEditingApplication(application);
+
+    setCompany(application.company);
+    setRole(application.role);
+    setStatus(application.status);
+    setDateApplied(application.dateApplied);
+    setJobUrl(application.jobUrl);
+    setLocation(application.location);
+    setSalaryRange(application.salaryRange);
+    setContactName(application.contactName);
+    setNotes(application.notes);
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -62,27 +94,42 @@ function ApplicationList({ applications, setApplications }: ApplicationListProps
       toast.error("Review the highlighted application fields.");
       return;
     }
+    
+    if (editingApplication) {
+      const updatedApplication: JobApplication = {
+        ...editingApplication,
+        company,
+        role,
+        status,
+        dateApplied,
+        jobUrl,
+        location,
+        salaryRange,
+        contactName,
+        notes,
+      };
 
-    const application = createApplication(company, role, status, {
-      dateApplied,
-      jobUrl,
-      location,
-      salaryRange,
-      contactName,
-      notes,
-    });
-    setApplications((current) => [...current, application]);
-    toast.success("Application added");
-    setCompany("");
-    setRole("");
-    setStatus("Applied");
-    setDateApplied(new Date().toISOString().slice(0, 10));
-    setJobUrl("");
-    setLocation("");
-    setSalaryRange("");
-    setContactName("");
-    setNotes("");
-    setErrors({});
+      setApplications((current) =>
+        updateApplication(current, updatedApplication)
+      );
+
+      toast.success("Application updated");
+    } else {
+      const application = createApplication(company, role, status, {
+        dateApplied,
+        jobUrl,
+        location,
+        salaryRange,
+        contactName,
+       notes,
+      });
+
+      setApplications((current) => [...current, application]);
+
+      toast.success("Application added");
+    }
+
+    resetForm();
   }
 
   function confirmDelete() {
@@ -126,8 +173,8 @@ function ApplicationList({ applications, setApplications }: ApplicationListProps
       <section className="section-card">
         <div className="panel-heading">
           <div>
-            <h2>Add an application</h2>
-            <p>Capture the essentials now and keep secondary details available when needed.</p>
+            <h2>{editingApplication ? "Edit Application" : "Add an application"}</h2>
+            <p>{editingApplication ? "Update the details of your application and save your changes." : "Capture the essentials now and keep secondary details available when needed."}</p>
           </div>
         </div>
 
@@ -219,7 +266,20 @@ function ApplicationList({ applications, setApplications }: ApplicationListProps
             />
           </FormField>
           <div className="form-actions">
-            <button type="submit">Add application</button>
+            <button type="submit">
+              {editingApplication ? "Save changes" : "Add application"}
+            </button>
+
+            {editingApplication ? (
+              <button
+                className="button-secondary"
+                onClick={(resetForm) => {
+                  resetForm();
+                }}
+              >
+                Cancel
+              </button>
+            ) : null}
           </div>
         </form>
       </section>
@@ -311,6 +371,14 @@ function ApplicationList({ applications, setApplications }: ApplicationListProps
                       </td>
                       <td className="table-actions">
                         <button
+                          className="text-button"
+                          onClick={() => handleEdit(application)}
+                          type="button"
+                        >
+                          Edit
+                        </button>
+
+                        <button
                           aria-label={`Delete ${application.company} application`}
                           className="text-button danger-text"
                           onClick={() => setPendingDelete(application)}
@@ -351,6 +419,15 @@ function ApplicationList({ applications, setApplications }: ApplicationListProps
                     >
                       {APPLICATION_STATUSES.map((option) => <option key={option}>{option}</option>)}
                     </select>
+
+                    <button
+                      className="button-secondary"
+                      onClick={() => handleEdit(application)}
+                      type="button"
+                    >
+                      Edit
+                    </button>
+                    
                     <button
                       className="button-secondary danger-text"
                       onClick={() => setPendingDelete(application)}
