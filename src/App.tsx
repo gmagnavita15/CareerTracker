@@ -1,5 +1,5 @@
 import {
-  BrowserRouter,
+  HashRouter,
   Routes,
   Route,
 } from "react-router-dom";
@@ -76,7 +76,7 @@ function App() {
     .map((recovery) => recovery.message);
 
   return (
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route 
             element={
@@ -140,7 +140,7 @@ function App() {
           />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
   );
 }
 
