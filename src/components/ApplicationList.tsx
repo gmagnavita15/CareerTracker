@@ -273,9 +273,8 @@ function ApplicationList({ applications, setApplications }: ApplicationListProps
             {editingApplication ? (
               <button
                 className="button-secondary"
-                onClick={(resetForm) => {
-                  resetForm();
-                }}
+                onClick={resetForm}
+                type="button"
               >
                 Cancel
               </button>
@@ -427,7 +426,7 @@ function ApplicationList({ applications, setApplications }: ApplicationListProps
                     >
                       Edit
                     </button>
-                    
+
                     <button
                       className="button-secondary danger-text"
                       onClick={() => setPendingDelete(application)}

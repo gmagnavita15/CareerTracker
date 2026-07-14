@@ -17,7 +17,12 @@ function Sidebar({ onNavigate }: SidebarProps) {
   return (
     <aside className="sidebar">
       <div className="brand">
-        <span className="brand-mark">CT</span>
+        <img
+          className="brand-logo"
+          src={`${import.meta.env.BASE_URL}logo.png`}
+          alt=""
+        />
+
         <span>CareerTracker</span>
       </div>
 
